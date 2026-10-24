@@ -76,7 +76,7 @@ function executeCommand(command) {
   const commands = {
     IZQUIERDA: "IZQUIERDA",
     DERECHA: "DERECHA",
-    DETENER: "DETENIDO"
+    DETENIDO: "DETENIDO"
   };
 
   if (!commands[command]) {
