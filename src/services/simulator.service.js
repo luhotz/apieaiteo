@@ -1,7 +1,11 @@
 let distance = 20;
 let motorState = "DETENIDO";
 let mode = "AUTOMATICO";
-let lastCommand = "DETENER";
+let lastCommand = "DETENIDO";
+// Rangos del modo automático (mismos valores que el sketch)
+const AUTO_MIN_CM = 15;    // desde aquí: DERECHA
+const AUTO_SPLIT_CM = 25;  // desde aquí: IZQUIERDA
+const AUTO_MAX_CM = 40;    // hasta aquí: IZQUIERDA
 
 function getDistance() {
   // Simula pequeñas variaciones de un sensor real.
@@ -14,11 +18,11 @@ function getDistance() {
 }
 
 function getAutomaticMotorState(cm) {
-  if (cm >= 10 && cm <= 25) {
+  if (cm >= AUTO_MIN_CM && cm < AUTO_SPLIT_CM) {
     return "DERECHA";
   }
 
-  if (cm >= 26 && cm <= 40) {
+  if (cm >= AUTO_SPLIT_CM && cm <= AUTO_MAX_CM) {
     return "IZQUIERDA";
   }
 
@@ -56,7 +60,7 @@ function setMode(newMode) {
     lastCommand = motorState;
   } else {
     motorState = "DETENIDO";
-    lastCommand = "DETENER";
+    lastCommand = "DETENIDO";
   }
 
   return getStatus();
