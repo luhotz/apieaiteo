@@ -1,8 +1,7 @@
 const simulator = require("./simulator.service");
 const device = require("./device.service");
 
-const simulationEnabled =
-  String(process.env.SIMULATION_MODE).toLowerCase() !== "false";
+const simulationEnabled = String(process.env.SIMULATION_MODE).toLowerCase() !== "false";
 
 function getStatus() {
   if (simulationEnabled) {
@@ -18,9 +17,10 @@ function getStatus() {
     motorState: telemetry?.motorState ?? "DETENIDO",
     lastCommand: device.getDeviceConfig().command,
     simulated: false,
+    // Reducido a 4 segundos para detectar desconexiones más rápido
     deviceOnline: Boolean(
       telemetry &&
-      Date.now() - Date.parse(telemetry.timestamp) < 15000
+      Date.now() - Date.parse(telemetry.timestamp) < 4000
     ),
     timestamp: telemetry?.timestamp ?? null
   };
@@ -29,14 +29,12 @@ function getStatus() {
 function setMode(mode) {
   device.setMode(mode);
   simulator.setMode(mode);
-
   return getStatus();
 }
 
 function executeCommand(command) {
   device.setCommand(command);
   simulator.executeCommand(command);
-
   return getStatus();
 }
 
@@ -48,10 +46,4 @@ function saveTelemetry(data) {
   return device.saveTelemetry(data);
 }
 
-module.exports = {
-  getStatus,
-  setMode,
-  executeCommand,
-  getDeviceConfig,
-  saveTelemetry
-};
+module.exports = { getStatus, setMode, executeCommand, getDeviceConfig, saveTelemetry };
