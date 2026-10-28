@@ -20,7 +20,7 @@ function getStatus() {
     simulated: false,
     deviceOnline: Boolean(
       telemetry &&
-      Date.now() - Date.parse(telemetry.timestamp) < 15000
+      Date.now() - Date.parse(telemetry.timestamp) < 5000
     ),
     timestamp: telemetry?.timestamp ?? null
   };
